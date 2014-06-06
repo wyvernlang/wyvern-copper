@@ -9,6 +9,7 @@ import java.util.Iterator;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
+import org.apache.tools.ant.types.Resource;
 import org.apache.tools.ant.types.resources.FileResource;
 
 import edu.umn.cs.melt.copper.compiletime.logging.CompilerLevel;
@@ -76,10 +77,13 @@ public class CopperAntTask extends Task
 	@SuppressWarnings("unchecked")
 	public void addConfiguredInputs(FileSet files)
 	{
-		Iterator<FileResource> it = files.iterator();
+		Iterator<Resource> it = files.iterator();
 		while(it.hasNext())
 		{
-			FileResource fr = it.next();
+			Resource r = it.next();
+			if (!(r instanceof FileResource))
+				continue;
+			FileResource fr = (FileResource)r;
 			inputs.add(Pair.cons(fr.getFile().toString(),(Object) fr.getFile()));
 		}
 	}
